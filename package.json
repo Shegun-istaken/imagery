@@ -13,7 +13,9 @@
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@vitejs/plugin-legacy": "^4.1.1",
+    "@vitejs/plugin-react": "^4.0.4",
     "firebase": "^10.4.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
@@ -21,14 +23,15 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "vite-plugin-ssr": "^0.4.141"
   },
   "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.36",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

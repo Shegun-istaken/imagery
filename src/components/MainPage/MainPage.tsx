@@ -1,38 +1,44 @@
 import ImagesList from "./ImagesList";
 import SearchBar from "./SearchBar";
 import { images } from "./images";
-import { createClient } from "pexels";
+// import { createClient } from "pexels";
 import { Suspense, useState, useRef } from "react";
+import "isomorphic-fetch";
 
 export default function MainPage() {
   const [list, setList] = useState([...images]);
   const [error, setError] = useState("");
   const inputElementRef = useRef<HTMLInputElement>();
-  const client = createClient(
-    "uGFSqdXOaRwLJyKC3V6HKy57XwYuX6Bfz0DaJS4K9bLqIVxiFQ9zn1x5"
-  );
+  // const client = createClient(
+  //   "uGFSqdXOaRwLJyKC3V6HKy57XwYuX6Bfz0DaJS4K9bLqIVxiFQ9zn1x5"
+  // );
 
-  function SearchPexels(query: string) {
+  async function SearchPexels(query: string) {
     try {
-      client.photos
-        .search({ query, per_page: 20 })
-        .then((photos) => {
-          // @ts-ignore
-          const sortedList = photos?.photos.map((item) => ({
-            src: item.src.large,
-            id: item.id,
-          }));
-          return sortedList;
-        })
-        .then((list) => {
-          if (list.length == 20) {
-            setList(list);
-            setError("");
-          } else {
-            setList([...images]);
-            setError("We don't have pictures that match your search");
-          }
-        });
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `uGFSqdXOaRwLJyKC3V6HKy57XwYuX6Bfz0DaJS4K9bLqIVxiFQ9zn1x5`,
+        },
+      };
+
+      const response = await fetch(
+        `https://api.pexels.com/v1/search?query=${query}&per_page=20`,
+        options
+      );
+      const data = await response.json();
+      const sortedList = await data?.photos.map((item) => ({
+        src: item.src.large,
+        id: item.id,
+      }));
+      if (sortedList.length == 20) {
+        setList(sortedList);
+        setError("");
+      } else {
+        setList([...images]);
+        setError("We don't have pictures that match your search");
+      }
     } catch (error) {
       setError("Something happened. Please try again");
     }
