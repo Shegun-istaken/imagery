@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import AuthConsumer from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 
-function LoadingHeading() {
+export function LoadingHeading() {
   return (
     <div className="flex justify-center items-center mt-24">
       <div className="flex items-center justify-center rounded-full w-14 h-14 bg-gradient-to-tr from-melon to-rosewood animate-spin">

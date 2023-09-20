@@ -1,4 +1,10 @@
-import { FC, useState, useCallback, CSSProperties } from "react";
+import {
+  FC,
+  useState,
+  useCallback,
+  CSSProperties,
+  useEffect,
+} from "react";
 import {
   DndContext,
   closestCenter,
@@ -14,31 +20,10 @@ import {
   arrayMove,
   SortableContext,
   rectSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
 import Grid from "./Grid";
-import { images } from "./images";
-import { CSS } from "@dnd-kit/utilities";
 
-function SortableImage({ image }: { image: { src: string; id: number } }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: image.id });
-
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
-
-  return (
-    <img
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
-      src={image.src}
-    />
-  );
-}
+import SortableImage from "./SortableImage";
 
 const inlineStyles: CSSProperties = {
   opacity: "0.8",
@@ -56,11 +41,21 @@ const inlineStyles: CSSProperties = {
   transform: "scale(1.2)",
 };
 
-const App: FC = () => {
-  const [items, setItems] = useState([...images]);
+type imagesList = {
+  id: number;
+  src: string;
+};
+
+const App: FC = ({ list }: { list: imagesList[] }) => {
+  const [items, setItems] = useState([...list]);
+
   const [activeId, setActiveId] = useState<string | null>(null);
   null;
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+
+  useEffect(() => {
+    setItems([...list]);
+  }, [list]);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
@@ -104,7 +99,7 @@ const App: FC = () => {
           ? items
               .filter((item) => item.id.toString() == activeId)
               .map((item) => (
-                <img key={item.src} style={inlineStyles} src={item.src} />
+                  <img key={item.src} style={inlineStyles} src={item.src} />
               ))
           : null}
       </DragOverlay>
