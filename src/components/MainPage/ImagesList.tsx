@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from "react";
+import { FC, useState, useCallback, CSSProperties } from "react";
 import {
   DndContext,
   closestCenter,
@@ -58,12 +58,13 @@ const inlineStyles: CSSProperties = {
 
 const App: FC = () => {
   const [items, setItems] = useState([...images]);
-  const [activeId, setActiveId] = useState<string | null>(null);(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  null;
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const { active } = event;
-    setActiveId(active.id);
+    setActiveId(active.id.toString());
   }, []);
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
@@ -102,7 +103,9 @@ const App: FC = () => {
         {activeId
           ? items
               .filter((item) => item.id.toString() == activeId)
-              .map((item) => <img style={inlineStyles} src={item.src} />)
+              .map((item) => (
+                <img key={item.src} style={inlineStyles} src={item.src} />
+              ))
           : null}
       </DragOverlay>
     </DndContext>
